@@ -4,8 +4,14 @@ import { fileURLToPath } from 'url';
 import pkg from 'otpless-node-js-auth-sdk';
 const { sendOTP, verifyOTP } = pkg;
 import { v4 as uuidv4 } from 'uuid';
+import cors from 'cors';
+import bodyParser from 'body-parser';
 
 const app = express();
+
+app.use(cors());
+app.use(bodyParser.json());
+
 
 // ES module equivalent of __dirname
 const __filename = fileURLToPath(import.meta.url);

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Service</title>
+   <style>
+    body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+
+h1 {
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input, select {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#message {
+    margin-top: 10px;
+    text-align: center;
+}
+
+   </style>
+</head>
+<body>
+    <div class="container">
+        <h1>OTP Service</h1>
+        <div class="form-group">
+            <label for="phoneNumber">Phone Number:</label>
+            <input type="text" id="phoneNumber" placeholder="Enter phone number">
+        </div>
+        <div class="form-group">
+            <label for="channel">Channel:</label>
+            <select id="channel">
+                <option value="sms">SMS</option>
+                <option value="email">Email</option>
+            </select>
+        </div>
+        <button onclick="sendOtp()">Send OTP</button>
+
+        <div class="form-group">
+            <label for="otp">OTP:</label>
+            <input type="text" id="otp" placeholder="Enter OTP">
+        </div>
+        <div class="form-group">
+            <label for="orderId">Order ID:</label>
+            <input type="text" id="orderId" placeholder="Enter Order ID">
+        </div>
+        <button onclick="verifyOtp()">Verify OTP</button>
+
+        <div id="message"></div>
+    </div>
+
+    <script>
+        const BASE_URL = 'https://otpless-yws7-git-main-ogpavans-projects.vercel.app/';
+
+async function sendOtp() {
+    const phoneNumber = document.getElementById('phoneNumber').value;
+    const channel = document.getElementById('channel').value;
+
+    try {
+        const response = await fetch(`${BASE_URL}/send-otp`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ phoneNumber, channel })
+        });
+        const data = await response.json();
+        document.getElementById('message').innerText = `OTP Sent. Order ID: ${data.orderId}`;
+        document.getElementById('orderId').value = data.orderId; // Store orderId for verification
+    } catch (error) {
+        document.getElementById('message').innerText = 'Error sending OTP';
+        console.error('Error:', error);
+    }
+}
+
+async function verifyOtp() {
+    const phoneNumber = document.getElementById('phoneNumber').value;
+    const otp = document.getElementById('otp').value;
+    const orderId = document.getElementById('orderId').value;
+
+    try {
+        const response = await fetch(`${BASE_URL}/verify-otp`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ phoneNumber, otp, orderId })
+        });
+        const data = await response.json();
+        if (data.success) {
+            document.getElementById('message').innerText = 'OTP Verified Successfully';
+        } else {
+            document.getElementById('message').innerText = 'OTP Verification Failed';
+        }
+    } catch (error) {
+        document.getElementById('message').innerText = 'Error verifying OTP';
+        console.error('Error:', error);
+    }
+}
+
+    </script>
+</body>
+</html>

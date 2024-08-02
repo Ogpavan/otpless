@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send and Verify OTP</title>
+    
+</head>
+<body>
+    <div class="container">
+        <h1>Send OTP</h1>
+        <form id="otpForm">
+            <div class="form-group">
+                <label for="phoneNumber">Phone Number:</label>
+                <input type="text" id="phoneNumber" name="phoneNumber" required>
+            </div>
+            <button type="submit">Send OTP</button>
+        </form>
+        <div id="sendResponse"></div>
+
+        <h1>Verify OTP</h1>
+        <form id="verifyOtpForm">
+            <div class="form-group">
+                <label for="verifyPhoneNumber">Phone Number:</label>
+                <input type="text" id="verifyPhoneNumber" name="verifyPhoneNumber" required>
+            </div>
+            <div class="form-group">
+                <label for="otp">OTP:</label>
+                <input type="text" id="otp" name="otp" required>
+            </div>
+            <button type="submit">Verify OTP</button>
+        </form>
+        <div id="verifyResponse"></div>
+    </div>
+
+    <script >
+        document.getElementById('otpForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    const phoneNumber = document.getElementById('phoneNumber').value;
+
+    try {
+        const response = await fetch('/send-otp', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ phoneNumber, channel: 'SMS' }) // Using SMS as the default channel
+        });
+        
+        const result = await response.json();
+        document.getElementById('sendResponse').innerText = result.success ? 
+            `OTP sent successfully. Order ID: ${result.orderId}` : 
+            `Error sending OTP: ${result.message}`;
+    } catch (error) {
+        document.getElementById('sendResponse').innerText = `Error: ${error.message}`;
+    }
+});
+
+document.getElementById('verifyOtpForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    const phoneNumber = document.getElementById('verifyPhoneNumber').value;
+    const otp = document.getElementById('otp').value;
+
+    try {
+        const response = await fetch('/verify-otp', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ phoneNumber, otp }) // No orderId in the simplified form
+        });
+        
+        const result = await response.json();
+        document.getElementById('verifyResponse').innerText = result.success ? 
+            `OTP verified successfully: ${JSON.stringify(result.response)}` : 
+            `Error verifying OTP: ${result.message}`;
+    } catch (error) {
+        document.getElementById('verifyResponse').innerText = `Error: ${error.message}`;
+    }
+});
+
+    </script>
+</body>
+</html>

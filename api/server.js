@@ -17,6 +17,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.get('/', (req, res) => {
+    res.send('Hello, World!');
+});
+
 // Endpoint to send OTP
 app.post('/send-otp', async (req, res) => {
     const { phoneNumber, channel } = req.body;

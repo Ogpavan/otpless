@@ -33,10 +33,10 @@ app.post('/send-otp', async (req, res) => {
 
     const hash = 'appHashValue';
     const orderId = uuidv4(); // Generate a unique orderId
-    const expiry = 300; // expiry time in seconds
+    const expiry = 3000; // expiry time in seconds
     const otpLength = 6; // length of the OTP
-    const clientId = '67XL76LDX98MFKB2C7JX9SMRUAHHTG7K';
-    const clientSecret = 'x2r8rdvomxhz6flt8ul7uhimsx7jfapa';
+    const clientId = 'YL2XPMQ3Z4NKTN5HII8092KD55ZZLF1U';
+    const clientSecret = 'c3826dn5ta55paun2jo8hgjhl8j3s149';
 
     try {
         const response = await sendOTP(phoneNumber, undefined, channel, hash, orderId, expiry, otpLength, clientId, clientSecret);

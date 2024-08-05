@@ -49,6 +49,7 @@ app.post('/send-otp', async (req, res) => {
 // Endpoint to verify OTP
 app.post('/verify-otp', async (req, res) => {
     const { phoneNumber, otp } = req.body; // Simplified request payload
+    console.log(req.body);
     const orderId = req.body.orderId; // Assuming orderId is sent along with phone number and OTP for verification
     const clientId = 'E27VBBQLG7V020H3R0NU600TNA6BZRNB';
     const clientSecret = '650qabspzlm73sn4thv4hd1kq34d29c1';

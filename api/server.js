@@ -35,8 +35,8 @@ app.post('/send-otp', async (req, res) => {
     const orderId = uuidv4(); // Generate a unique orderId
     const expiry = 3000; // expiry time in seconds
     const otpLength = 6; // length of the OTP
-    const clientId = 'EIABUOFJ0G3BPYENMER0CJX8NI7D6FMI';
-    const clientSecret = 'u5im7rnqkbh5q449i7gezfs3flpfrfu2';
+    const clientId = 'E27VBBQLG7V020H3R0NU600TNA6BZRNB';
+    const clientSecret = '650qabspzlm73sn4thv4hd1kq34d29c1';
 
     try {
         const response = await sendOTP(phoneNumber, undefined, channel, hash, orderId, expiry, otpLength, clientId, clientSecret);
@@ -50,8 +50,8 @@ app.post('/send-otp', async (req, res) => {
 app.post('/verify-otp', async (req, res) => {
     const { phoneNumber, otp } = req.body; // Simplified request payload
     const orderId = req.body.orderId; // Assuming orderId is sent along with phone number and OTP for verification
-    const clientId = 'u5im7rnqkbh5q449i7gezfs3flpfrfu2';
-    const clientSecret = 'u5im7rnqkbh5q449i7gezfs3flpfrfu2';
+    const clientId = 'E27VBBQLG7V020H3R0NU600TNA6BZRNB';
+    const clientSecret = '650qabspzlm73sn4thv4hd1kq34d29c1';
 
     try {
         const response = await verifyOTP(undefined, phoneNumber, orderId, otp, clientId, clientSecret);
